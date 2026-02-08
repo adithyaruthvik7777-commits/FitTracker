@@ -1,3 +1,12 @@
 {
-    "liveServer.settings.port": 5504
+    "liveServer.settings.port": 5504,
+    "liveServer.settings.root": "/Fit-tracker",
+    "liveServer.settings.donotShowInfoMsg": false,
+    "liveServer.settings.donotVerifyTags": false,
+    "liveServer.settings.ignoreFiles": [
+        ".vscode/**",
+        "**/*.scss",
+        "**/*.sass"
+    ],
+    "livePreview.defaultPreviewPath": "/Fit-tracker/login.html"
 }

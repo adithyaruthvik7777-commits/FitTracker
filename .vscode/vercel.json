@@ -1,0 +1,25 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "builds": [
+    {
+      "src": "Fit-tracker/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/Fit-tracker/index.html"
+    },
+    {
+      "source": "/([^.?]+)/?$",
+      "destination": "/Fit-tracker/$1.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/Fit-tracker/$1"
+    }
+  ]
+}
+

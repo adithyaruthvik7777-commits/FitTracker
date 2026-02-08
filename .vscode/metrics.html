@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Gym Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gym | Metrics</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    
+    <style>
+        body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .metrics-section {
+            background-color: #000000 !important;
+        }
+        .metrics-form, .metrics-list, .custom-plan {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        h2, h3, h4, h5 {
+            color: #ffffff !important;
+        }
+        label {
+            color: #ffffff !important;
+        }
+        .form-control {
+            background-color: #2a2a2a !important;
+            color: #ffffff !important;
+            border: 1px solid #444444 !important;
+        }
+        .form-control:focus {
+            background-color: #2a2a2a !important;
+            color: #ffffff !important;
+            border-color: #f36100 !important;
+        }
+        .list-group-item {
+            background-color: #2a2a2a !important;
+            color: #ffffff !important;
+            border: 1px solid #444444 !important;
+        }
+        .primary-btn, .add-metrics-btn {
+            background-color: #f36100 !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        .primary-btn:hover, .add-metrics-btn:hover {
+            background-color: #ff7a1a !important;
+        }
+        .plan-day {
+            background-color: #2a2a2a !important;
+            color: #ffffff !important;
+        }
+        .plan-day-header h5 {
+            color: #f36100 !important;
+        }
+        .plan-tip, .plan-progression, .plan-recovery {
+            color: #ffffff !important;
+        }
+        .plan-tip strong, .plan-progression strong, .plan-recovery strong {
+            color: #f36100 !important;
+        }
+        .plan-meta {
+            color: #cccccc !important;
+        }
+        .plan-session-list li {
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="logo">
+                        <a href="./index.html">
+                            <p class="logo-text">FitTracker</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./team.html">Our Team</a></li>
+                            <li><a href="./bmi-calculator.html">Bmi calculate</a></li>
+                            <li class="active"><a href="./metrics.html">Metrics</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Metrics Section Begin -->
+    <section class="metrics-section spad">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="metrics-form">
+                        <h2 class="text-center">Add Metrics</h2>
+                        <form id="metricsForm" onsubmit="return handleMetricsSubmit(event)">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="calories">Calories Burned (kcal)</label>
+                                <input type="number" id="calories" name="calories" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="distance">Walked Distance (km)</label>
+                                <input type="number" id="distance" name="distance" class="form-control" step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="steps">Steps Walked</label>
+                                <input type="number" id="steps" name="steps" class="form-control" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sp02">SpO₂ (%)</label>
+                                <input type="number" id="sp02" name="sp02" class="form-control" min="0" max="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Workout Duration (hrs)</label>
+                                <input type="number" id="duration" name="duration" class="form-control" step="0.1" min="0" required>
+                            </div>
+                            <button type="submit" class="primary-btn add-metrics-btn">Add Metrics</button>
+                        </form>
+                    </div>
+
+                    <div class="metrics-list mt-4">
+                        <h3 class="text-center">Stored Metrics</h3>
+                        <ul id="metricsOutput" class="list-group">
+                            <!-- Metrics will be displayed here -->
+                        </ul>
+                    </div>
+
+                    <div class="custom-plan mt-5">
+                        <h2 class="text-center">Custom Workout Plan</h2>
+                        <form id="planForm" class="mt-4" onsubmit="return handlePlanSubmit(event)">
+                            <div class="form-group">
+                                <label for="planName">Plan Name</label>
+                                <input type="text" id="planName" name="planName" class="form-control" placeholder="e.g. Spring Cut Program" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="goal">Primary Goal</label>
+                                    <select id="goal" name="goal" class="form-control" required>
+                                        <option value="">Select goal</option>
+                                        <option value="weight_loss">Weight Loss</option>
+                                        <option value="strength">Strength</option>
+                                        <option value="endurance">Endurance</option>
+                                        <option value="mobility">Mobility</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="experience">Training Experience</label>
+                                    <select id="experience" name="experience" class="form-control" required>
+                                        <option value="">Select level</option>
+                                        <option value="beginner">Beginner</option>
+                                        <option value="intermediate">Intermediate</option>
+                                        <option value="advanced">Advanced</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="daysPerWeek">Days Per Week</label>
+                                    <input type="number" id="daysPerWeek" name="daysPerWeek" class="form-control" min="2" max="7" value="4" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="availableTime">Time Per Session (minutes)</label>
+                                    <input type="number" id="availableTime" name="availableTime" class="form-control" min="20" max="120" step="5" value="45" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="equipment">Available Equipment</label>
+                                    <select id="equipment" name="equipment" class="form-control" required>
+                                        <option value="">Select equipment</option>
+                                        <option value="bodyweight">Bodyweight only</option>
+                                        <option value="basic">Basic (bands, dumbbells)</option>
+                                        <option value="full">Full gym</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="focusPreference">Focus Preference</label>
+                                    <select id="focusPreference" name="focusPreference" class="form-control" required>
+                                        <option value="balanced">Balanced</option>
+                                        <option value="upper">Upper Body</option>
+                                        <option value="lower">Lower Body</option>
+                                        <option value="cardio">Cardio Conditioning</option>
+                                        <option value="mobility">Mobility & Recovery</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="notes">Additional Notes (optional)</label>
+                                    <input type="text" id="notes" name="notes" class="form-control" placeholder="e.g. Knee-friendly, include core work">
+                                </div>
+                            </div>
+                            <button type="submit" class="primary-btn add-metrics-btn">Generate Plan</button>
+                            <button type="button" class="primary-btn add-metrics-btn ml-2" onclick="clearStoredPlan()">Clear Saved Plan</button>
+                        </form>
+
+                        <div id="planOutput" class="mt-4" style="display: none;">
+                            <h3 class="text-center" id="planTitle"></h3>
+                            <p class="text-center mb-3" id="planSummary"></p>
+                            <ul id="planList" class="list-group"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Metrics Section End -->
+
+    <!-- Footer Section -->
+    <section class="footer-section">
+        <div class="container">
+            <p>&copy; <script>document.write(new Date().getFullYear());</script> FitTracker. All rights reserved.</p>
+        </div>
+    </section>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- JavaScript for handling form submission and displaying metrics -->
+    <script>
+        function handleMetricsSubmit(event) {
+            event.preventDefault(); // Prevent form from submitting traditionally
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const calories = document.getElementById('calories').value;
+            const distance = document.getElementById('distance').value;
+            const steps = document.getElementById('steps').value;
+            const sp02 = document.getElementById('sp02').value;
+            const duration = document.getElementById('duration').value;
+
+            // Create a metrics object
+            const metrics = {
+                name,
+                calories,
+                distance,
+                steps,
+                sp02,
+                duration
+            };
+
+            // Store the metrics in local storage
+            const storedMetrics = JSON.parse(localStorage.getItem('metrics')) || [];
+            storedMetrics.push(metrics);
+            localStorage.setItem('metrics', JSON.stringify(storedMetrics));
+
+            // Reset the form
+            document.getElementById('metricsForm').reset();
+
+            // Display the updated metrics list
+            displayMetrics();
+
+            alert('Metrics added successfully!');
+        }
+
+        function displayMetrics() {
+            const metricsOutput = document.getElementById('metricsOutput');
+            metricsOutput.innerHTML = ''; // Clear previous output
+
+            // Get stored metrics from local storage
+            const storedMetrics = JSON.parse(localStorage.getItem('metrics')) || [];
+
+            // Populate the metrics output
+            storedMetrics.forEach((metric) => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.innerHTML = `
+                    <strong>${metric.name}</strong>: 
+                    Calories: ${metric.calories} kcal, 
+                    Distance: ${metric.distance} km, 
+                    Steps: ${metric.steps}, 
+                    SpO₂: ${metric.sp02}%, 
+                    Duration: ${metric.duration} hrs
+                `;
+                metricsOutput.appendChild(li);
+            });
+        }
+
+        const WORKOUT_BLUEPRINTS = {
+            weight_loss: {
+                beginner: [
+                    {
+                        id: 'wl-beg-1',
+                        title: 'Cardio Intervals & Core',
+                        focus: 'Cardio Conditioning',
+                        intensity: 'Moderate',
+                        estimatedDuration: 40,
+                        tags: ['cardio', 'balanced'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 5 min brisk walk or marching in place',
+                                'Circuit x4 (45s on / 15s off): high knees, squat to knee drive, mountain climbers, plank shoulder taps',
+                                'Core finisher: 3 rounds of 20s hollow hold + 12 glute bridges',
+                                'Cool-down: 5 min total body stretch'
+                            ],
+                            basic: [
+                                'Warm-up: 5 min rower or jump rope at easy pace',
+                                'Intervals x6: 1 min kettlebell swings + 1 min fast step-ups, repeat with 45s rest',
+                                'Core finisher: 3 rounds of 15 dumbbell Russian twists + 30s side plank per side',
+                                'Cool-down with foam rolling (quads + calves)'
+                            ],
+                            full: [
+                                'Warm-up: 5 min incline treadmill walk + dynamic mobility',
+                                'Intervals x6: 2 min treadmill run (RPE 7) + 1 min battle ropes + 45s recovery walk',
+                                'Core finisher: cable wood chops 3x12/side + hanging knee raises 3x12',
+                                'Cool-down: walk & stretch 5 min'
+                            ],
+                            any: [
+                                'Breathing reset: 2 min diaphragmatic breathing lying on your back'
+                            ]
+                        },
+                        coachingTips: [
+                            'Keep perceived effort around 7/10 during the hard intervals.',
+                            'If you feel form breaking, swap to marching in place to maintain movement.'
+                        ],
+                        progression: 'Add one more interval every two weeks or shorten recovery by 10 seconds.',
+                        recovery: 'Hydrate and include light walking the following morning.'
+                    },
+                    {
+                        id: 'wl-beg-2',
+                        title: 'Strength Circuits',
+                        focus: 'Full-Body Strength',
+                        intensity: 'Moderate',
+                        estimatedDuration: 45,
+                        tags: ['balanced', 'lower'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 5 min mobility (arm circles, hip openers, leg swings)',
+                                'Circuit x3: 12 squats, 12 alternating reverse lunges, 10 push-ups (knees if needed), 30s plank, 12 glute bridges',
+                                'Metabolic finisher x2: 40s jumping jacks + 20s rest',
+                                'Cool-down: 5 min hamstring and hip stretch'
+                            ],
+                            basic: [
+                                'Warm-up: 5 min mobility + light band pull-aparts',
+                                'Circuit x4: 10 goblet squats, 12 Romanian deadlifts, 10 push presses, 12 renegade rows total, 30s band pull-aparts',
+                                'Finisher: EMOM 5 min alternating 12 kettlebell swings with 30s rest',
+                                'Cool-down: Stretch hip flexors, lats, hamstrings'
+                            ],
+                            full: [
+                                'Warm-up: 5 min assault bike + dynamic mobility',
+                                'Strength tri-set x4: leg press 12 reps, cable row 12 reps, DB incline press 12 reps',
+                                'Accessory x3: walking lunges 14 steps, lat pulldown 12 reps, rope tricep pressdown 15 reps',
+                                'Finisher: sled push 20 m down & back x4 with 60s rest',
+                                'Cool-down: 5 min stretching + foam rolling quads'
+                            ],
+                            any: [
+                                'Log weights used to track progression next week.'
+                            ]
+                        },
+                        coachingTips: [
+                            'Move with intent but keep rest between stations under 45 seconds.',
+                            'Choose weights that leave 2 reps in reserve on the final round.'
+                        ],
+                        progression: 'Increase load or add an additional round every 1-2 weeks.',
+                        recovery: 'Add gentle cycling or yoga flow the following day.'
+                    },
+                    {
+                        id: 'wl-beg-3',
+                        title: 'Low Impact Conditioning',
+                        focus: 'Low-Impact Cardio',
+                        intensity: 'Low to Moderate',
+                        estimatedDuration: 35,
+                        tags: ['mobility', 'cardio'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: cat-cow, thoracic rotations, ankle circles (2 min each)',
+                                'Stationary circuit x4: 45s step-back lunges, 45s lateral squats, 45s seated punches, 45s heel elevated glute bridge',
+                                'Mobility flow: 2 rounds of world’s greatest stretch + 30s child’s pose',
+                                'Cool-down: breathing ladder (inhale 3s, exhale 6s for 5 min)'
+                            ],
+                            basic: [
+                                'Warm-up: 5 min light cycling or elliptical',
+                                'Cardio ladder: 6 min incline treadmill walk, 4 min rower, 2 min battle rope waves (repeat once)',
+                                'Mobility flow with light band assistance for shoulders and hips',
+                                'Cool-down: foam roll calves, IT band, upper back'
+                            ],
+                            full: [
+                                'Warm-up: 5 min versa climber at easy pace',
+                                'Interval pyramid: 2, 3, 4, 3, 2 min on stair climber (RPE 6-7) with 1 min easy between efforts',
+                                'Mobility: assisted stretching for hamstrings and hip flexors',
+                                'Cool-down: seated breathing and gentle neck mobility'
+                            ],
+                            any: [
+                                'Optional: finish with 5 min mindfulness meditation'
+                            ]
+                        },
+                        coachingTips: [
+                            'Focus on steady nasal breathing throughout the session.',
+                            'Keep movements pain-free; adjust range of motion if joints feel tight.'
+                        ],
+                        progression: 'Add 5 minutes of total work time every other week.',
+                        recovery: 'Prioritize 7-8 hours of sleep to support recovery.'
+                    },
+                    {
+                        id: 'wl-beg-4',
+                        title: 'Tempo Walk & Mobility',
+                        focus: 'Active Recovery',
+                        intensity: 'Low',
+                        estimatedDuration: 30,
+                        tags: ['mobility', 'balanced'],
+                        sessions: {
+                            bodyweight: [
+                                'Brisk walk outdoors or treadmill: 20 min alternating 3 min fast / 2 min easy',
+                                'Mobility circuit x2: down dog to plank, spinal twists, hip flexor stretch, calf stretch',
+                                'Core stability: 3x (15 bird-dogs, 20 dead bugs)'
+                            ],
+                            basic: [
+                                'Assault bike or spin bike: 20 min tempo ride at RPE 5-6',
+                                'Mobility circuit with light band assistance for shoulders and ankles',
+                                'Core stability: 3x (15 banded pallof presses per side, 20 dead bugs)'
+                            ],
+                            full: [
+                                'Row erg: 5 min easy + 15 min moderate pace (stroke rate 20-22)',
+                                'Mobility with TRX assistance: deep squat holds, T-spine rotations',
+                                'Core stability: cable anti-rotation press 3x12 per side + Swiss ball stir-the-pot 3x30s'
+                            ],
+                            any: [
+                                'Finish with guided box breathing: 4s inhale, 4s hold, 4s exhale, 4s hold for 3 min'
+                            ]
+                        },
+                        coachingTips: [
+                            'Keep heart rate in recovery zone; you should be able to hold a conversation.',
+                            'Use this day to assess how your body is responding to the week.'
+                        ],
+                        progression: 'Extend the tempo intervals or add light hill work as tolerance improves.',
+                        recovery: 'Great day to focus on hydration and prep meals for the week.'
+                    }
+                ],
+                intermediate: [
+                    {
+                        id: 'wl-int-1',
+                        title: 'Hybrid Conditioning',
+                        focus: 'Metabolic Conditioning',
+                        intensity: 'Moderate to High',
+                        estimatedDuration: 50,
+                        tags: ['balanced', 'cardio'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: dynamic mobility + 10 min alternating lateral bounds and inchworms',
+                                'AMRAP 15 min: 12 burpees, 20 walking lunges, 15 V-sit ups, 200 m run (or 60s high knees)',
+                                'Finisher EMOM 8 min: odd minutes 12 squat jumps, even minutes 40s plank jacks'
+                            ],
+                            basic: [
+                                'Warm-up: 5 min ski erg + mobility',
+                                'Triplet x5 rounds for time: 12 kettlebell swings, 10 thrusters, 250 m row',
+                                'Finisher EMOM 10: 12 calories assault bike (odd) / 12 med-ball slams (even)'
+                            ],
+                            full: [
+                                'Warm-up: 5 min echo bike + banded mobility',
+                                'Strength complex x4 rounds: barbell front squat 8, push press 8, barbell row 10',
+                                'Conditioning: 4 rounds of 400 m run + 15 wall balls + 12 toes-to-bar'
+                            ],
+                            any: [
+                                'Post-session: 5 min legs-up-the-wall pose for recovery'
+                            ]
+                        },
+                        coachingTips: [
+                            'Maintain consistent pacing each round; avoid red-lining early.',
+                            'Track total rounds or time to monitor progress week over week.'
+                        ],
+                        progression: 'Add load to the complexes or increase AMRAP duration by 2 minutes.',
+                        recovery: 'Contrast showers or light mobility session later in the day.'
+                    },
+                    {
+                        id: 'wl-int-2',
+                        title: 'Strength + Finishers',
+                        focus: 'Strength & Conditioning',
+                        intensity: 'High',
+                        estimatedDuration: 55,
+                        tags: ['balanced', 'upper'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 3 rounds of 10 walkouts, 20 alternating lunges, 30s plank',
+                                'Circuit x4: 15 tempo squats, 12 pike push-ups, 20 alternating single-leg glute bridges, 12 dive bomber push-ups',
+                                'Finisher: Tabata (20s on /10s off x8) alternating mountain climbers and squat pulses'
+                            ],
+                            basic: [
+                                'Warm-up: landmine rotations, band pull-aparts, air squats',
+                                'Superset x4: front squat 10, single-arm row 12/side',
+                                'Superset x3: Romanian deadlift 12, push press 10',
+                                'Finisher: kettlebell complex (swings, cleans, presses) EMOM 8'
+                            ],
+                            full: [
+                                'Warm-up: dynamic warm-up + barbell complex empty bar',
+                                'Strength work: back squat 4x8 (75% 1RM), bench press 4x8 (75% 1RM)',
+                                'Accessory giant set x3: Bulgarian split squat 12/side, cable row 15, DB incline press 12, hanging leg raises 12',
+                                'Finisher: bike sprint 10s + 50 double-unders x5 rounds'
+                            ],
+                            any: [
+                                'Cool-down: stretch chest, quads, hip flexors for 2 min each'
+                            ]
+                        },
+                        coachingTips: [
+                            'Focus on controlled eccentric phases to increase time under tension.',
+                            'Log weights and keep 1-2 reps in reserve to manage fatigue.'
+                        ],
+                        progression: 'Increase load by 2-5% when all sets feel strong.',
+                        recovery: 'Add 10 minutes of foam rolling to support tissue recovery.'
+                    },
+                    {
+                        id: 'wl-int-3',
+                        title: 'Active Recovery & Mobility',
+                        focus: 'Recovery',
+                        intensity: 'Low',
+                        estimatedDuration: 35,
+                        tags: ['mobility'],
+                        sessions: {
+                            bodyweight: [
+                                'Tempo walk or light jog 20 min (RPE 4-5)',
+                                'Mobility flow: world’s greatest stretch, 90/90 hip switches, thoracic rotation, ankle rocks (3 rounds)',
+                                'Core stability: 3x30s side planks each side + 3x12 single-leg bridges'
+                            ],
+                            basic: [
+                                'Bike or row 20 min easy pace',
+                                'Mobility with light bands/TRX for shoulders, hips, ankles',
+                                'Core stability: Pallof press holds 3x30s per side + Swiss ball stir-the-pot 3x12'
+                            ],
+                            full: [
+                                'Swim or elliptical 25 min easy pace',
+                                'Assisted stretch session with straps/TRX for full body',
+                                'Core: cable anti-rotation 3x12 per side + reverse hypers 3x15'
+                            ],
+                            any: [
+                                'Finish with 5 min guided box breathing'
+                            ]
+                        },
+                        coachingTips: [
+                            'Keep breathing controlled and avoid muscular fatigue today.',
+                            'Use this session to focus on range of motion and posture.'
+                        ],
+                        progression: 'Increase mobility hold times or add light tempo runs as recovery improves.',
+                        recovery: 'Aim for an additional 30 min walking later in the day.'
+                    }
+                ],
+                advanced: [
+                    {
+                        id: 'wl-adv-1',
+                        title: 'High-Octane Conditioning',
+                        focus: 'High Intensity Conditioning',
+                        intensity: 'High',
+                        estimatedDuration: 60,
+                        tags: ['cardio', 'balanced'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 10 min dynamic drills (A-skips, carioca, bounding)',
+                                'Benchmark chipper: 100 double-unders, 50 burpees, 50 alternating pistols, 50 hand-release push-ups, 1000 m run',
+                                'Cool-down: walk 5 min + mobility'
+                            ],
+                            basic: [
+                                'Warm-up: 5 min assault bike + activation with bands',
+                                'Chipper for time: 25 box jump overs, 20 DB thrusters, 30 calories row, 20 DB snatches/arm, 400 m farmer carry',
+                                'Cool-down: mobility + breathing drills'
+                            ],
+                            full: [
+                                'Warm-up: sled push/pull + dynamic warm-up',
+                                'Conditioning ladder: 500 m row, 40 wall balls, 30 chest-to-bar pull-ups, 20 barbell snatches (135/95 lb), 10 bar muscle-ups, 500 m ski',
+                                'Cool-down: stretch + Normatec 10 min'
+                            ],
+                            any: [
+                                'Record time and highlight limiting factors for next session.'
+                            ]
+                        },
+                        coachingTips: [
+                            'Plan strategic breaks to maintain technique under fatigue.',
+                            'Fuel pre-session with carbohydrates to support intensity.'
+                        ],
+                        progression: 'Repeat the session monthly aiming to improve completion time.',
+                        recovery: 'Schedule contrast baths or massage within 24 hours.'
+                    },
+                    {
+                        id: 'wl-adv-2',
+                        title: 'Strength Density',
+                        focus: 'Strength & Power',
+                        intensity: 'High',
+                        estimatedDuration: 55,
+                        tags: ['upper', 'balanced'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: handstand prep, single-leg squats to box, explosive push-ups',
+                                'EMOM 20: odd minutes 12 handstand push-ups, even minutes 16 alternating pistols',
+                                'Accessory: 4x 12 explosive broad jumps + 4x12 Superman back extensions'
+                            ],
+                            basic: [
+                                'Warm-up: heavy band work, kettlebell flows',
+                                'Strength density: 5 rounds of 10 front squats, 10 push presses, 10 bent-over rows with challenging weight',
+                                'Accessory: farmer carry 60 m heavy, 3 sets'
+                            ],
+                            full: [
+                                'Warm-up: Olympic lifting prep',
+                                'Lift clusters: power clean + push jerk 6x (3+3) at 70-75%, rest 90s',
+                                'Strength superset: back squat 4x6 @80%, weighted dips 4x10',
+                                'Accessory: sled drag heavy 30 m x4'
+                            ],
+                            any: [
+                                'Cool-down: mobility focusing on thoracic spine and hips'
+                            ]
+                        },
+                        coachingTips: [
+                            'Prioritize quality movement; stop sets if technique slips.',
+                            'Log loads and rate of perceived exertion for each cluster.'
+                        ],
+                        progression: 'Increase intensity by 2-3% weekly or add sets if recovery is strong.',
+                        recovery: 'Sleep 8+ hours and include intra-workout hydration.'
+                    },
+                    {
+                        id: 'wl-adv-3',
+                        title: 'Regeneration Session',
+                        focus: 'Recovery',
+                        intensity: 'Low',
+                        estimatedDuration: 40,
+                        tags: ['mobility'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: light jog 5 min then dynamic mobility',
+                                'Mobility blocks: hip capsules, thoracic rotation, shoulder CARs (3 rounds)',
+                                'Core & breath: 3x90s dead bug breathing, 3x15 Copenhagen planks'
+                            ],
+                            basic: [
+                                'Air bike 10 min Z1 pace',
+                                'Mobility with bands/TRX for deeper ranges',
+                                'Core & breath: Pallof press iso holds 4x30s per side, reverse hypers 4x15'
+                            ],
+                            full: [
+                                'Swim recovery 15 min',
+                                'Assisted stretch session + myofascial release tools',
+                                'Core & breath: cable lifting pattern 3x12, diaphragmatic breathing 5 min'
+                            ],
+                            any: [
+                                'Optional sauna 15 min if available for additional recovery'
+                            ]
+                        },
+                        coachingTips: [
+                            'Use recovery sessions to reset before next high-intensity day.',
+                            'Focus on nasal breathing and long exhales throughout.'
+                        ],
+                        progression: 'Add more targeted mobility for problem areas as needed.',
+                        recovery: 'Finish with protein-rich meal to support repair.'
+                    }
+                ]
+            },
+            strength: {
+                beginner: [
+                    {
+                        id: 'st-beg-1',
+                        title: 'Foundational Strength',
+                        focus: 'Full Body Strength',
+                        intensity: 'Moderate',
+                        estimatedDuration: 45,
+                        tags: ['balanced'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: glute bridges, wall slides, bodyweight squats (2 rounds)',
+                                'Circuit x4: 12 sumo squats, 10 elevated push-ups, 12 hip thrusts, 10 inverted rows (table), 30s plank',
+                                'Finisher: 3 rounds of bear crawl 30s + rest 30s'
+                            ],
+                            basic: [
+                                'Warm-up: light goblet squats, band pull-aparts, hip airplanes',
+                                'Tri-set x4: goblet squat 12, single-arm dumbbell row 12/side, dumbbell bench press 12',
+                                'Accessory: Romanian deadlift 12 + band face pulls 20 (3 sets)',
+                                'Finisher: farmer carry 40 m x3'
+                            ],
+                            full: [
+                                'Warm-up: empty bar complex',
+                                'Strength x5: back squat 5x5 @70%, bench press 5x5 @70%',
+                                'Accessory x3: leg curl 15, seated cable row 12, DB shoulder press 12',
+                                'Core finisher: cable pallof press 3x15/side'
+                            ],
+                            any: [
+                                'Cool-down: stretch lats, hips, chest 1 min each'
+                            ]
+                        },
+                        coachingTips: [
+                            'Control the lowering phase to build stability.',
+                            'Choose loads that allow perfect form across all sets.'
+                        ],
+                        progression: 'Increase weight 2-5 lb weekly if all reps completed cleanly.',
+                        recovery: 'Target 1g protein per kg body weight to support strength gains.'
+                    },
+                    {
+                        id: 'st-beg-2',
+                        title: 'Posterior Chain Focus',
+                        focus: 'Lower Body Strength',
+                        intensity: 'Moderate',
+                        estimatedDuration: 40,
+                        tags: ['lower'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: hip hinge drills, single-leg balance, glute bridges',
+                                'Circuit x4: 15 hip hinging good mornings, 12 step-ups per leg, 12 glute bridges, 15 calf raises, 30s side plank',
+                                'Finisher: 3x1 min brisk stair climb'
+                            ],
+                            basic: [
+                                'Warm-up: kettlebell swings light, band walks',
+                                'Superset x4: Romanian deadlift 12, Bulgarian split squat 12/leg',
+                                'Accessory: kettlebell swings 4x20, band hamstring curls 3x20',
+                                'Core: stability ball hamstring curls 3x15'
+                            ],
+                            full: [
+                                'Warm-up: deadlift prep',
+                                'Strength: deadlift 5x5 @70%, walking lunges 4x12/side',
+                                'Accessory: leg press 3x15, lying hamstring curl 3x15',
+                                'Core: weighted back extensions 3x15'
+                            ],
+                            any: [
+                                'Cool-down: seated hamstring stretch + pigeon pose 2 min each'
+                            ]
+                        },
+                        coachingTips: [
+                            'Maintain neutral spine throughout hinge patterns.',
+                            'Drive through the entire foot on squats and lunges.'
+                        ],
+                        progression: 'Add load or tempo (3-1-1) on the eccentric phase.',
+                        recovery: 'Use a lacrosse ball to release glutes afterwards.'
+                    }
+                ],
+                intermediate: [
+                    {
+                        id: 'st-int-1',
+                        title: 'Upper/Lower Split - Lower',
+                        focus: 'Lower Body Strength',
+                        intensity: 'High',
+                        estimatedDuration: 60,
+                        tags: ['lower'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: squat therapy, single-leg Romanian deadlifts (unloaded)',
+                                'Strength: 5x8 tempo squats, 4x12 walking lunges, 4x15 hip thrusts (single-leg if possible)',
+                                'Accessory: Nordic hamstring curls 4x6, calf raises 4x20'
+                            ],
+                            basic: [
+                                'Warm-up: banded glute activation + kettlebell swing primer',
+                                'Strength: front squat 4x6, Romanian deadlift 4x8, Bulgarian split squat 4x10',
+                                'Accessory: split squat iso holds 3x30s, hip thrust 3x15',
+                                'Finisher: sled drag (if available) or heavy farmer carry 4x30 m'
+                            ],
+                            full: [
+                                'Warm-up: barbell complexes + mobility',
+                                'Strength: back squat 5x5 @80%, deadlift 4x4 @80%, leg press 4x12',
+                                'Accessory: reverse lunge 3x12/side, hack squat 3x10',
+                                'Finisher: belt squat 2x20'
+                            ],
+                            any: [
+                                'Cool-down: couch stretch, pigeon pose, calf stretch 2 min each'
+                            ]
+                        },
+                        coachingTips: [
+                            'Use full range of motion and keep core braced.',
+                            'Track loads to ensure progressive overload.'
+                        ],
+                        progression: 'Increase load 2-3% weekly or add a set at the same weight.',
+                        recovery: 'Refuel with carbs and protein within 60 minutes.'
+                    },
+                    {
+                        id: 'st-int-2',
+                        title: 'Upper/Lower Split - Upper',
+                        focus: 'Upper Body Strength',
+                        intensity: 'High',
+                        estimatedDuration: 55,
+                        tags: ['upper'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: scap push-ups, shoulder circles, band pull-aparts (if band available otherwise towel)',
+                                'Strength: 5x10 push-ups (weighted backpack optional), 4x12 inverted rows, 4x12 pike push-ups',
+                                'Accessory: diamond push-ups 3x12, towel bicep curls 3x15, chair dips 3x15'
+                            ],
+                            basic: [
+                                'Warm-up: light dumbbell complex',
+                                'Strength: bench press 4x6, single-arm row 4x10/side, seated shoulder press 4x8',
+                                'Accessory: incline DB fly 3x12, lateral raises 3x15, band face pulls 3x20',
+                                'Finisher: push-up ladder 1-10-1 with minimal rest'
+                            ],
+                            full: [
+                                'Warm-up: cable rotations, lat activation',
+                                'Strength: barbell bench press 5x5 @80%, weighted pull-ups 4x6, seated DB shoulder press 4x8',
+                                'Accessory: chest-supported row 3x12, cable fly 3x15, tricep dips 3x12',
+                                'Finisher: battle rope intervals 6x30s on / 30s off'
+                            ],
+                            any: [
+                                'Cool-down: stretch pecs, lats, triceps 90s each'
+                            ]
+                        },
+                        coachingTips: [
+                            'Keep shoulders packed and avoid shrugging during presses.',
+                            'Control tempo, especially during the eccentric phase.'
+                        ],
+                        progression: 'Add load once all sets hit target reps with good form.',
+                        recovery: 'Add light band pull-aparts throughout the day to aid posture.'
+                    }
+                ],
+                advanced: [
+                    {
+                        id: 'st-adv-1',
+                        title: 'Push/Pull/Legs - Push',
+                        focus: 'Upper Push Strength',
+                        intensity: 'High',
+                        estimatedDuration: 65,
+                        tags: ['upper'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: handstand holds, explosive push-ups',
+                                'Strength: deficit push-ups weighted 5x12, handstand push-ups 5x8, ring dips 4x12',
+                                'Accessory: pseudo planche push-ups 4x10, tricep extensions with resistance bands 4x20'
+                            ],
+                            basic: [
+                                'Warm-up: landmine press prep, band pull-aparts',
+                                'Strength: incline dumbbell press 5x6, landmine press 5x8/side, weighted dips 4x10',
+                                'Accessory: cable fly 4x15, overhead tricep extensions 4x12'
+                            ],
+                            full: [
+                                'Warm-up: barbell complex, shoulder mobility',
+                                'Strength: barbell bench 5x5 @82%, overhead press 5x5 @78%, weighted dips 4x10',
+                                'Accessory: machine chest press drop set x3, rope pushdowns 4x15, lateral raise mechanical dropset'
+                            ],
+                            any: [
+                                'Cool-down: banded shoulder stretch, doorway pec stretch'
+                            ]
+                        },
+                        coachingTips: [
+                            'Keep scapulae retracted during pressing to protect shoulders.',
+                            'Use micro plates (1-2 lb) for incremental overload if available.'
+                        ],
+                        progression: 'Add intensity techniques (drop sets, tempo) once loads plateau.',
+                        recovery: 'Ensure 48 hours before repeating push-focused work.'
+                    }
+                ]
+            },
+            endurance: {
+                beginner: [
+                    {
+                        id: 'en-beg-1',
+                        title: 'Aerobic Base Builder',
+                        focus: 'Steady-State Endurance',
+                        intensity: 'Low to Moderate',
+                        estimatedDuration: 40,
+                        tags: ['cardio'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 10 min brisk walk with 3 x 30s pick-ups',
+                                'Main set: 20 min continuous jog or fast walk at conversational pace',
+                                'Cool-down: walking + calf and hamstring stretches'
+                            ],
+                            basic: [
+                                'Warm-up: 8 min spin bike at easy pace',
+                                'Main set: 20 min bike ride holding 60-70% max heart rate',
+                                'Cool-down: 5 min easy pedal + lower body stretches'
+                            ],
+                            full: [
+                                'Warm-up: treadmill 5 min easy + dynamic drills',
+                                'Main set: 5x4 min run @70% HRmax with 1 min walk recovery',
+                                'Cool-down: walk 5 min + foam roll calves'
+                            ],
+                            any: [
+                                'Breathing practice: 3 min box breathing post-session'
+                            ]
+                        },
+                        coachingTips: [
+                            'Aim to finish feeling like you could have continued for another 5 minutes.',
+                            'Track average pace or heart rate to monitor improvements.'
+                        ],
+                        progression: 'Add 2 minutes to the main set each week.',
+                        recovery: 'Stay hydrated and refuel with balanced meal post-session.'
+                    }
+                ],
+                intermediate: [
+                    {
+                        id: 'en-int-1',
+                        title: 'Tempo Builder',
+                        focus: 'Tempo Training',
+                        intensity: 'Moderate',
+                        estimatedDuration: 50,
+                        tags: ['cardio'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 10 min including drills (A-skips, butt kicks, strides)',
+                                'Main: 3x8 min tempo run (RPE 7) with 2 min walk/jog recovery',
+                                'Cool-down: walk 8 min + mobility'
+                            ],
+                            basic: [
+                                'Warm-up: 10 min ride including cadence build-ups',
+                                'Main: 3x10 min bike tempo (80% FTP) with 3 min easy spin between',
+                                'Cool-down: spin 6 min easy + quad stretch'
+                            ],
+                            full: [
+                                'Warm-up: row erg 10 min with pick-ups',
+                                'Main: 4x6 min at threshold pace with 2 min easy row',
+                                'Cool-down: 6 min easy row + mobility'
+                            ],
+                            any: [
+                                'Stretch hip flexors and calves post-session'
+                            ]
+                        },
+                        coachingTips: [
+                            'Hold steady pace; avoid sprinting at the start of each interval.',
+                            'Record splits for each tempo block to gauge pacing.'
+                        ],
+                        progression: 'Add an extra interval every other week.',
+                        recovery: 'Include an easy recovery session the following day.'
+                    }
+                ],
+                advanced: [
+                    {
+                        id: 'en-adv-1',
+                        title: 'VO₂ Max Intervals',
+                        focus: 'High Intensity Intervals',
+                        intensity: 'High',
+                        estimatedDuration: 55,
+                        tags: ['cardio'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 15 min including dynamic drills and 4x20s strides',
+                                'Main: 6x3 min hard (RPE 9) with 2 min easy jog between',
+                                'Cool-down: 10 min jog + mobility'
+                            ],
+                            basic: [
+                                'Warm-up: 15 min on bike with cadence openers',
+                                'Main: 7x3 min @110% FTP with 3 min easy spin',
+                                'Cool-down: 10 min easy + foam roll'
+                            ],
+                            full: [
+                                'Warm-up: swim or row 15 min progressive',
+                                'Main: 10x200 m swim hard with 45s rest OR 6x500 m row hard with 2 min rest',
+                                'Cool-down: 10 min easy pace'
+                            ],
+                            any: [
+                                'Post-session hydration with electrolytes'
+                            ]
+                        },
+                        coachingTips: [
+                            'Intervals should feel challenging but sustainable with proper pacing.',
+                            'Focus on relaxed shoulders and efficient mechanics.'
+                        ],
+                        progression: 'Increase interval duration to 4 minutes or add one more rep.',
+                        recovery: 'Schedule a low-intensity day after this session.'
+                    }
+                ]
+            },
+            mobility: {
+                beginner: [
+                    {
+                        id: 'mob-beg-1',
+                        title: 'Recovery Mobility Flow',
+                        focus: 'Mobility & Stability',
+                        intensity: 'Low',
+                        estimatedDuration: 30,
+                        tags: ['mobility'],
+                        sessions: {
+                            bodyweight: [
+                                'Breathing reset: 5 min 90/90 breathing with foam roller under feet',
+                                'Mobility flow x3 rounds: cat-cow, thoracic rotations, world’s greatest stretch, ankle rocks, shoulder CARs',
+                                'Stability: 3x12 bird-dogs, 3x30s side plank each side'
+                            ],
+                            basic: [
+                                'Add mini-band clamshells and lateral walks between mobility drills',
+                                'Finish with 2 min per side band-assisted hamstring stretch'
+                            ],
+                            full: [
+                                'Include TRX-assisted deep squat holds and lat stretch',
+                                'Add cable anti-rotation press 3x12/side for core stability'
+                            ],
+                            any: [
+                                'Optional: 5 min meditation focusing on slow exhales'
+                            ]
+                        },
+                        coachingTips: [
+                            'Move slowly and explore range of motion without forcing stretches.',
+                            'Use smooth breathing to relax into each position.'
+                        ],
+                        progression: 'Increase hold times or add additional rounds as mobility improves.',
+                        recovery: 'Ideal before bed to promote relaxation.'
+                    }
+                ],
+                intermediate: [
+                    {
+                        id: 'mob-int-1',
+                        title: 'Strengthen & Lengthen',
+                        focus: 'Mobility & Strength',
+                        intensity: 'Low to Moderate',
+                        estimatedDuration: 35,
+                        tags: ['mobility', 'balanced'],
+                        sessions: {
+                            bodyweight: [
+                                'Warm-up: 5 min flow (down dog, plank, lunge reaches)',
+                                'Mobility strength x3: controlled articular rotations (hips, shoulders), Cossack squats 10/side, Jefferson curls 10',
+                                'Activation: 3x15 single-leg glute bridge, 3x15 YTWs on floor'
+                            ],
+                            basic: [
+                                'Add light kettlebell for Cossack squats and Jefferson curls',
+                                'Finish with banded overhead distractions 3x30s'
+                            ],
+                            full: [
+                                'Include cable face pulls, single-arm cable presses in split stance',
+                                'Add weighted deep squat holds 3x45s with kettlebell'
+                            ],
+                            any: [
+                                'Cool-down: foam roll lats, glutes, calves'
+                            ]
+                        },
+                        coachingTips: [
+                            'Control every rep; prioritize quality over quantity.',
+                            'Keep ribs down and core engaged during loaded mobility.'
+                        ],
+                        progression: 'Add load gradually or increase hold times by 10 seconds.',
+                        recovery: 'Follow with light cardio flush if feeling stiff.'
+                    }
+                ],
+                advanced: [
+                    {
+                        id: 'mob-adv-1',
+                        title: 'Athletic Mobility Reset',
+                        focus: 'Advanced Mobility',
+                        intensity: 'Moderate',
+                        estimatedDuration: 40,
+                        tags: ['mobility'],
+                        sessions: {
+                            bodyweight: [
+                                'Flow: 10 min primal flow combining bear crawls, crab reaches, and deep squat transitions',
+                                'Loaded mobility: 4x6 single-leg Jefferson curls, 4x8 shrimp squats, 4x8 bridge rotations',
+                                'Core integration: 3x12 L-sit lifts, 3x30s front lever tuck holds'
+                            ],
+                            basic: [
+                                'Add parallettes for L-sit work and light kettlebell for Jefferson curls',
+                                'Include banded distraction stretches for hips and shoulders'
+                            ],
+                            full: [
+                                'Incorporate cable resisted CARS, weighted Copenhagen planks, and overhead squat therapy with dowel then bar',
+                                'Finish with assisted Nordic curls 3x8'
+                            ],
+                            any: [
+                                'Contrast mobility: hot shower then cold rinse 30s x3'
+                            ]
+                        },
+                        coachingTips: [
+                            'Stay in control of end ranges; avoid bouncing.',
+                            'Focus on full body tension during isometric holds.'
+                        ],
+                        progression: 'Increase complexity or move to single-arm/single-leg variations.',
+                        recovery: 'Schedule before a rest day to allow tissues to adapt.'
+                    }
+                ]
+            }
+        };
+
+        function handlePlanSubmit(event) {
+            event.preventDefault();
+
+            const planRequest = {
+                planName: document.getElementById('planName').value.trim(),
+                goal: document.getElementById('goal').value,
+                experience: document.getElementById('experience').value,
+                daysPerWeek: parseInt(document.getElementById('daysPerWeek').value, 10),
+                availableTime: parseInt(document.getElementById('availableTime').value, 10),
+                equipment: document.getElementById('equipment').value,
+                focusPreference: document.getElementById('focusPreference').value,
+                notes: document.getElementById('notes').value.trim()
+            };
+
+            if (!planRequest.planName || !planRequest.goal || !planRequest.experience || Number.isNaN(planRequest.daysPerWeek) || Number.isNaN(planRequest.availableTime) || !planRequest.equipment) {
+                alert('Please complete all required fields to generate a custom plan.');
+                return false;
+            }
+
+            const schedule = generateWorkoutSchedule(planRequest);
+
+            if (!schedule.length) {
+                alert('Unable to generate a plan for the selected combination. Please adjust your selections and try again.');
+                return false;
+            }
+
+            const planPayload = {
+                meta: {
+                    ...planRequest,
+                    createdAt: new Date().toISOString()
+                },
+                schedule
+            };
+
+            renderPlan(planPayload);
+            savePlan(planPayload);
+
+            alert('Custom workout plan generated!');
+            return false;
+        }
+
+        function generateWorkoutSchedule(request) {
+            const {
+                goal,
+                experience,
+                focusPreference,
+                daysPerWeek,
+                equipment,
+                availableTime
+            } = request;
+
+            const library = WORKOUT_BLUEPRINTS[goal];
+            if (!library) {
+                return [];
+            }
+
+            const levelBlueprints = library[experience] || [];
+            if (!levelBlueprints.length) {
+                return [];
+            }
+
+            const desiredBlueprints = selectBlueprints(levelBlueprints, focusPreference);
+            if (!desiredBlueprints.length) {
+                return [];
+            }
+
+            const schedule = [];
+            for (let i = 0; i < daysPerWeek; i += 1) {
+                const blueprint = desiredBlueprints[i % desiredBlueprints.length];
+                const sessions = resolveSessions(blueprint.sessions, equipment);
+
+                if (!sessions.length) {
+                    continue;
+                }
+
+                schedule.push({
+                    dayLabel: `Day ${i + 1}`,
+                    title: blueprint.title,
+                    focus: blueprint.focus,
+                    intensity: blueprint.intensity,
+                    estimatedDuration: blueprint.estimatedDuration,
+                    timeTarget: availableTime,
+                    sessions,
+                    coachingTips: blueprint.coachingTips || [],
+                    progression: blueprint.progression || '',
+                    recovery: blueprint.recovery || ''
+                });
+            }
+
+            return schedule;
+        }
+
+        function selectBlueprints(blueprints, focusPreference) {
+            if (focusPreference === 'balanced') {
+                return blueprints;
+            }
+
+            const matched = blueprints.filter((item) => (item.tags || []).includes(focusPreference));
+            if (matched.length) {
+                return matched;
+            }
+
+            return blueprints;
+        }
+
+        function resolveSessions(sessions, equipment) {
+            if (!sessions) {
+                return [];
+            }
+
+            const equipmentSessions = sessions[equipment] || sessions.bodyweight || [];
+            const anySessions = sessions.any || [];
+            return [...equipmentSessions, ...anySessions];
+        }
+
+        function renderPlan(plan) {
+            const planOutput = document.getElementById('planOutput');
+            const planTitle = document.getElementById('planTitle');
+            const planSummary = document.getElementById('planSummary');
+            const planList = document.getElementById('planList');
+
+            planList.innerHTML = '';
+
+            if (!plan || !plan.schedule || !plan.schedule.length) {
+                planOutput.style.display = 'none';
+                planTitle.textContent = '';
+                planSummary.textContent = '';
+                return;
+            }
+
+            planOutput.style.display = 'block';
+            const planName = plan.meta.planName || 'Custom Workout Plan';
+            const goalLabel = humanizeGoal(plan.meta.goal || 'custom');
+            planTitle.textContent = `${planName} · ${goalLabel}`;
+            planSummary.textContent = buildPlanSummary(plan.meta, plan.schedule.length);
+
+            plan.schedule.forEach((day) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item plan-day';
+                const tipsMarkup = day.coachingTips && day.coachingTips.length
+                    ? `<p class="plan-tip"><strong>Coach tip${day.coachingTips.length > 1 ? 's' : ''}:</strong> ${day.coachingTips.join(' ')}</p>`
+                    : '';
+                const progressionMarkup = day.progression
+                    ? `<p class="plan-progression"><strong>Progression:</strong> ${day.progression}</p>`
+                    : '';
+                const recoveryMarkup = day.recovery
+                    ? `<p class="plan-recovery"><strong>Recovery:</strong> ${day.recovery}</p>`
+                    : '';
+
+                listItem.innerHTML = `
+                    <div class="plan-day-header">
+                        <h5>${day.dayLabel} · ${day.title}</h5>
+                        <p class="plan-meta">Focus: ${day.focus} · Intensity: ${day.intensity} · Target: ${day.timeTarget} min (Blueprint ${day.estimatedDuration} min)</p>
+                    </div>
+                    <ul class="plan-session-list mb-2">
+                        ${day.sessions.map((session) => `<li>${session}</li>`).join('')}
+                    </ul>
+                    ${tipsMarkup}
+                    ${progressionMarkup}
+                    ${recoveryMarkup}
+                `;
+
+                planList.appendChild(listItem);
+            });
+        }
+
+        function humanizeGoal(goal) {
+            const GOAL_MAP = {
+                weight_loss: 'Weight Loss',
+                strength: 'Strength',
+                endurance: 'Endurance',
+                mobility: 'Mobility',
+                custom: 'Custom'
+            };
+
+            return GOAL_MAP[goal] || goal;
+        }
+
+        function humanizeEquipment(equipment) {
+            const EQUIPMENT_MAP = {
+                bodyweight: 'Bodyweight only',
+                basic: 'Basic gear',
+                full: 'Full gym'
+            };
+
+            return EQUIPMENT_MAP[equipment] || equipment;
+        }
+
+        function buildPlanSummary(meta, days) {
+            const experience = meta.experience || 'All levels';
+            const level = experience.charAt(0).toUpperCase() + experience.slice(1);
+            const equipment = humanizeEquipment(meta.equipment || 'bodyweight');
+            const focusPreference = meta.focusPreference || 'balanced';
+            const focusText = focusPreference === 'balanced' ? 'Balanced focus' : `${focusPreference.charAt(0).toUpperCase()}${focusPreference.slice(1)} focus`;
+            const notes = meta.notes ? ` · Notes: ${meta.notes}` : '';
+            const timeText = meta.availableTime ? `${meta.availableTime} min sessions` : 'Flexible session length';
+            return `${level} · ${focusText} · ${days} day plan · ${equipment} · ${timeText}${notes}`;
+        }
+
+        function savePlan(plan) {
+            try {
+                localStorage.setItem('customPlan', JSON.stringify(plan));
+            } catch (error) {
+                console.error('Unable to save plan to localStorage', error);
+            }
+        }
+
+        function loadStoredPlan() {
+            try {
+                const stored = localStorage.getItem('customPlan');
+                if (!stored) {
+                    return;
+                }
+
+                const parsed = JSON.parse(stored);
+                renderPlan(parsed);
+                populatePlanForm(parsed.meta);
+            } catch (error) {
+                console.error('Unable to load stored plan', error);
+            }
+        }
+
+        function populatePlanForm(meta) {
+            if (!meta) {
+                return;
+            }
+
+            const form = document.getElementById('planForm');
+            if (!form) {
+                return;
+            }
+
+            document.getElementById('planName').value = meta.planName || '';
+            document.getElementById('goal').value = meta.goal || '';
+            document.getElementById('experience').value = meta.experience || '';
+            document.getElementById('daysPerWeek').value = meta.daysPerWeek || 4;
+            document.getElementById('availableTime').value = meta.availableTime || 45;
+            document.getElementById('equipment').value = meta.equipment || '';
+            document.getElementById('focusPreference').value = meta.focusPreference || 'balanced';
+            document.getElementById('notes').value = meta.notes || '';
+        }
+
+        function clearStoredPlan() {
+            localStorage.removeItem('customPlan');
+            renderPlan({ meta: {}, schedule: [] });
+            alert('Saved workout plan cleared.');
+        }
+
+        window.addEventListener('load', () => {
+            displayMetrics();
+            loadStoredPlan();
+        });
+    </script>
+</body>
+</html>
+
