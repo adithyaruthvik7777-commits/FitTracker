@@ -8,18 +8,7 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/",
-      "destination": "/Fit-tracker/index.html"
-    },
-    {
-      "source": "/([^.?]+)/?$",
-      "destination": "/Fit-tracker/$1.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/Fit-tracker/$1"
-    }
+    { "source": "/", "destination": "/Fit-tracker/index.html" },
+    { "source": "/:path*", "destination": "/Fit-tracker/:path*" }
   ]
 }
-
