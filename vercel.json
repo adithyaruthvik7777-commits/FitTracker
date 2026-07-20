@@ -1,21 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "builds": [
-    {
-      "src": "Fit-tracker/**/*",
-      "use": "@vercel/static"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/Fit-tracker/index"
-    },
-    {
-      "source": "/:path*",
-      "destination": "/Fit-tracker/:path*"
-    }
-  ]
+  "trailingSlash": false
 }
